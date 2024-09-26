@@ -1,11 +1,22 @@
+using AlunosAPI.Context;
+using AlunosAPI.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Criando conexão com o banco de dados
+builder.Services.AddDbContext<AppDbContext>(o =>
+{
+    o.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"));
+});
+
+builder.Services.AddScoped<IAlunoService, AlunosService>();
 
 var app = builder.Build();
 
